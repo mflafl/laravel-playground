@@ -1,21 +1,37 @@
 ## Laravel PHP Framework
 
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/version.png)](https://packagist.org/packages/laravel/framework) [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.png)](https://packagist.org/packages/laravel/framework) [![Build Status](https://travis-ci.org/laravel/framework.png)](https://travis-ci.org/laravel/framework) [![License](https://poser.pugx.org/laravel/framework/license.png)](https://packagist.org/packages/laravel/framework)
+# install vendors
+```sh
+  $ composer install
+```
+# download and install ffmpeg (binnary path - ffmpeg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+# check rabitmq server setting (app/config/queue.php)
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+```sh
+  'rabbitmq' => array(
+        'driver'         => 'rabbitmq',
+        'host'           => 'localhost',
+        'port'           => '5672',
+        'vhost'          => '',
+        'login'          => '',
+        'password'       => '',
+        'queue'          => 'queue', // name of the default queue
+        'exchange_name'  => 'exchange', // name of the exchange
+        // Type of your exchange
+        // Can be AMQP_EX_TYPE_DIRECT or AMQP_EX_TYPE_FANOUT
+        // see documentation for more info
+        // http://www.rabbitmq.com/tutorials/amqp-concepts.html
+        'exchange_type'  => AMQP_EX_TYPE_DIRECT,
+        'exchange_flags' => AMQP_DURABLE,
+    )
+```
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+# start rabbitmq server
+# start queue listener: run from project root:
 
-## Official Documentation
+```sh
+  $ php artisan queue:listen
+```
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
-
-### Contributing To Laravel
-
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+# converted files path: /public/*.ogg

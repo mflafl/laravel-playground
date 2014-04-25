@@ -1,9 +1,11 @@
 <?php
 
 class BaseController extends Controller {
+	
+	protected $layout = 'layouts.base';
 
 	/**
-	 * Setup the layout used by the controller.
+	 * Upload file page.
 	 *
 	 * @return void
 	 */
@@ -13,15 +15,25 @@ class BaseController extends Controller {
 	}
 
 	/**
-	 * Setup the layout used by the controller.
+	 * Upload form handler
 	 *
 	 * @return void
 	 */
 	protected function uploadFormProcess()
 	{
-		$clientName = Input::file('file')->getClientOriginalName();
-		$uploaded = Input::file('file')->move('uploads', $clientName);
-		Queue::push('convertHandler', array('name' => $clientName));
-		return Redirect::to('');
+		$validator = Validator::make(
+			array('file' => Input::file('file')),
+			array('file' => 'required|mimes:mpga')
+		);
+
+		if ($validator->fails()) {
+			return Redirect::to('')->withErrors($validator);
+		} else {
+			$clientName = Input::file('file')->getClientOriginalName();
+			$clientName = str_replace(' ', '', $clientName);
+			$uploaded = Input::file('file')->move('uploads', $clientName);
+			Queue::push('convertHandler', array('name' => $clientName));
+			return Redirect::to('');
+		}
 	}
 }
