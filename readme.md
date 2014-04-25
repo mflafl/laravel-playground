@@ -6,7 +6,7 @@ install vendors
 ```
 install ffmpeg (binary path - ffmpeg)
 
-check rabitmq server setting (app/config/queue.php)
+check rabitmq server settings (app/config/queue.php)
 
 ```sh
   'rabbitmq' => array(
@@ -26,8 +26,6 @@ check rabitmq server setting (app/config/queue.php)
         'exchange_flags' => AMQP_DURABLE,
     )
 ```
-
-start rabbitmq server
 start queue listener: run from project root:
 
 ```sh
