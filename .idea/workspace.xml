@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59857d76-fe3d-4c3e-914a-3699461ae649" name="Default" comment="template / instructionr">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/lv.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+    <list default="true" id="59857d76-fe3d-4c3e-914a-3699461ae649" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="lv.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -179,7 +171,11 @@
       <created>1398439098519</created>
       <updated>1398439098520</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="readme update">
+      <created>1398439248258</created>
+      <updated>1398439248258</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -220,7 +216,8 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="template / instruction" />
-    <option name="LAST_COMMIT_MESSAGE" value="template / instruction" />
+    <MESSAGE value="readme update" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
