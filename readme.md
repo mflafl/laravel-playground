@@ -1,13 +1,12 @@
 ## Laravel PHP Framework
 
-Install vendors
+* Install vendors
 ```sh
   $ composer install
 ```
-Install ffmpeg (binary path - ffmpeg)
+* Install ffmpeg (binary path - ffmpeg)
 
-Check rabitmq server settings (app/config/queue.php)
-
+* Check rabitmq server settings (app/config/queue.php)
 ```sh
   'rabbitmq' => array(
         'driver'         => 'rabbitmq',
@@ -26,10 +25,9 @@ Check rabitmq server settings (app/config/queue.php)
         'exchange_flags' => AMQP_DURABLE,
     )
 ```
-Start queue listener (run from project root)
-
+* Start queue listener (run from project root)
 ```sh
   $ php artisan queue:listen
 ```
 
-* converted files path: public/*.ogg
+* Convert files, converted files output path: 'public/*.ogg'
