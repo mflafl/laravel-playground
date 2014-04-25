@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59857d76-fe3d-4c3e-914a-3699461ae649" name="Default" comment="readme update">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="59857d76-fe3d-4c3e-914a-3699461ae649" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="lv.iws" />
@@ -184,7 +184,15 @@
       <created>1398439458046</created>
       <updated>1398439458047</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="readme update">
+      <created>1398439493266</created>
+      <updated>1398439493266</updated>
+    </task>
+    <task id="LOCAL-00006" summary="readme update">
+      <created>1398439552246</created>
+      <updated>1398439552246</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
