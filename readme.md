@@ -4,7 +4,7 @@ install vendors
 ```sh
   $ composer install
 ```
-download and install ffmpeg (binnary path - ffmpeg)
+install ffmpeg (binary path - ffmpeg)
 
 check rabitmq server setting (app/config/queue.php)
 
