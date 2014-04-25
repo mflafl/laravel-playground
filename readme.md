@@ -30,4 +30,4 @@
   $ php artisan queue:listen
 ```
 
-* Convert files (public/*.ogg)
+* Upload mp3 files (output to public/*.ogg)
