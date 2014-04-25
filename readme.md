@@ -30,4 +30,4 @@
   $ php artisan queue:listen
 ```
 
-* Convert files, converted files output path: 'public/*.ogg'
+* Convert files (public/*.ogg)

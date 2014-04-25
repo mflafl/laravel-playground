@@ -192,7 +192,15 @@
       <created>1398439552246</created>
       <updated>1398439552246</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="readme update">
+      <created>1398439613599</created>
+      <updated>1398439613599</updated>
+    </task>
+    <task id="LOCAL-00008" summary="readme update">
+      <created>1398439687679</created>
+      <updated>1398439687679</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
