@@ -36,7 +36,7 @@ return array(
             'vhost'          => '',
             'login'          => '',
             'password'       => '',
-            'queue'          => 'queue', // name of the default queue
+            'queue'          => 'convert', // name of the default queue
             'exchange_name'  => 'exchange', // name of the exchange
             // Type of your exchange
             // Can be AMQP_EX_TYPE_DIRECT or AMQP_EX_TYPE_FANOUT

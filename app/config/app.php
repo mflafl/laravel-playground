@@ -92,7 +92,6 @@ return array(
 	*/
 
 	'providers' => array(
-
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
@@ -119,7 +118,8 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-    'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',
+    'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',    
+    'App\WebSocket\WebSocketServiceProvider',
 	),
 
 	/*
@@ -147,7 +147,6 @@ return array(
 	*/
 
 	'aliases' => array(
-
 		'App'             => 'Illuminate\Support\Facades\App',
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',
 		'Auth'            => 'Illuminate\Support\Facades\Auth',
@@ -184,8 +183,8 @@ return array(
 		'Str'             => 'Illuminate\Support\Str',
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
-		'View'            => 'Illuminate\Support\Facades\View',
-
+		'View'            => 'Illuminate\Support\Facades\View',    
+    'WebSocket'       => 'App\WebSocket\WebSocketFacade'
 	),
 
 );

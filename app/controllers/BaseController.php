@@ -33,7 +33,6 @@ class BaseController extends Controller {
 			$clientName = str_replace(' ', '', $clientName);
 			$uploaded = Input::file('file')->move('uploads', $clientName);
 			Queue::push('convertHandler', array('name' => $clientName));
-			return Redirect::to('');
 		}
 	}
 }
