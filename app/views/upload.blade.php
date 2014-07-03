@@ -11,6 +11,7 @@
 <?php echo Form::open(array('url' => 'convert', 'files' => true)); ?>
 <p><?php echo Form::file('file', $attributes = array()); ?></p>
 <?php echo Form::submit('Convert', ['class' => 'btn btn-lg btn-success']); ?>
+<?php echo Form::hidden('username'); ?>
 <?php echo Form::close();?>
 </div>
 @endsection

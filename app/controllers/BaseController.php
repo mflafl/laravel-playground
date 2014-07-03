@@ -23,7 +23,8 @@ class BaseController extends Controller {
 	{
 		$validator = Validator::make(
 			array('file' => Input::file('file')),
-			array('file' => 'required|mimes:mpga')
+			array('file' => 'required|mimes:mpga'),
+			array('username' => 'required')
 		);
 
 		if ($validator->fails()) {
@@ -32,7 +33,8 @@ class BaseController extends Controller {
 			$clientName = Input::file('file')->getClientOriginalName();
 			$clientName = str_replace(' ', '', $clientName);
 			$uploaded = Input::file('file')->move('uploads', $clientName);
-			Queue::push('convertHandler', array('name' => $clientName));
+			$data = array('filename' => $clientName, 'username' => Input::get('username'));			
+			Queue::push('convertHandler', $data);
 		}
 	}
 }

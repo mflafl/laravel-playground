@@ -14,6 +14,20 @@
 
         ws.onmessage = function(event) {
           console.log(event.data);
+          var data = jQuery.parseJSON(event.data);          
+          switch (data.action) {
+            case 'login':              
+              $('input[name=username]').val(data.parameters.username);                
+              break;
+
+            case 'convert.progress':
+            
+              break;
+
+            case 'convert.success':
+              
+              break;
+          }
         }
 
         ws.onclose = function(event) {

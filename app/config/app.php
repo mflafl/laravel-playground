@@ -120,6 +120,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
     'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',    
     'App\WebSocket\WebSocketServiceProvider',
+    'Rafasamp\Sonus\SonusServiceProvider',
 	),
 
 	/*
@@ -184,7 +185,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',    
-    'WebSocket'       => 'App\WebSocket\WebSocketFacade'
+    'WebSocket'       => 'App\WebSocket\WebSocketFacade',
+    'Sonus'           => 'Rafasamp\Sonus\Facade',
 	),
 
 );
