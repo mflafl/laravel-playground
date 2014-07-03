@@ -1,0 +1,69 @@
+Index: src/Gscore/WsApp.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Gscore/WsApp.php	(revision cc310d77cde31b327d04d06983f88fafd75e5fef)
++++ src/Gscore/WsApp.php	(revision )
+@@ -12,22 +12,19 @@
+     public function __construct( $config ) {
+         $this->config = $config; //may be need in future
+         $this->clients = new \SplObjectStorage;
+-
+     }
+ 
+-    public function onOpen(ConnectionInterface $conn) {
++    public function onOpen(ConnectionInterface $conn) {}
+ 
+-        $conn->username = 'guest';
+-        $this->clients->attach($conn);
+-
+-        echo "New connection! ({$conn->resourceId})" . PHP_EOL;
+-        echo $this->getOnline();
+-
+-    }
+-
+     public function onMessage(ConnectionInterface $client, $msg) {
+-        $response = $this->loginAction( $client, $msg );
++        $client->username = $client->resourceId;
++        $this->clients->attach($client);
++        $response = new JsonMessage('login', array(
++            'status' => 200,
++            'username' => $client->resourceId
++            ));                                                                   
+         Sender::send($client , $response);
++        echo $this->getOnline();
+     }
+ 
+     public function onClose(ConnectionInterface $conn) {
+@@ -63,7 +60,7 @@
+         echo "onZMQ message: sended to clients in ". (time() - $time1) . 'mc'. PHP_EOL;
+     }
+ 
+-    protected function getOnline(){
++    protected function getOnline() {
+         $result = '';
+         foreach ($this->clients as $client){
+             $result .= self::getConnectionInfo($client);
+@@ -71,12 +68,11 @@
+         return 'ONLINE: '. $result . PHP_EOL ;
+     }
+ 
+-    protected static function getConnectionInfo( $client ){
++    protected static function getConnectionInfo( $client ) {
+         return "{$client->username}({$client->resourceId})";
+     }
+ 
+-    protected function loginAction(ConnectionInterface $from, $msg){
++    protected function loginAction(ConnectionInterface $from, $msg) {
+-
+         $wsseValidator = new WsseValidator();
+         if ($wsseValidator->isValid($msg)){
+             $from->username = $wsseValidator->getUsername();
+@@ -90,5 +86,4 @@
+             return new JsonMessage('login', array('status' => 401));
+         }
+     }
+-
+ }
+\ No newline at end of file
