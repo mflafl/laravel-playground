@@ -22,19 +22,30 @@ class BaseController extends Controller {
 	protected function uploadFormProcess()
 	{
 		$validator = Validator::make(
-			array('file' => Input::file('file')),
-			array('file' => 'required|mimes:mpga'),
-			array('username' => 'required')
+			array(
+				'file' => Input::file('file'),
+				'username' => Input::get('username')
+			),
+			array(
+				'file' => 'required|mimes:mpga',
+				'username' => 'required'
+			)
 		);
 
 		if ($validator->fails()) {
-			return Redirect::to('')->withErrors($validator);
+			$messages = $validator->messages();
+			echo $messages;			
 		} else {
-			$clientName = Input::file('file')->getClientOriginalName();
-			$clientName = str_replace(' ', '', $clientName);
-			$uploaded = Input::file('file')->move('uploads', $clientName);
-			$data = array('filename' => $clientName, 'username' => Input::get('username'));			
-			Queue::push('convertHandler', $data);
+			$username = Input::get('username');
+			$filename = $username.time();			
+			$uploaded = Input::file('file')->move('uploads', $filename);
+			$data = array(
+				'filename' => $filename,
+				'file' => $uploaded->getRealPath(),
+				'username' => Input::get('username')
+			);
+			Queue::push('convertHandler', $data);			
 		}
+		exit();
 	}
 }

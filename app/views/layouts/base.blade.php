@@ -1,33 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="audioConverter" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mp3 to ogg converter</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">    
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap-theme.min.css">    
   </head>
   <body>
 <div class="container">
   <div class="header">
     <h3 class="text-muted">mp3 to ogg converter</h3>
   </div>
-  <div class="jumbotron">
+
+  <ul ng-show="messages.length" class="messages">
+      <li class="alert alert-<% message.type %>" ng-repeat="message in messages">
+          <% message.text %>
+      </li>
+  </ul>
+    
+  <div class="jumbotron" ng-controller="IndexCtrl">
     <h1>Upload file</h1>
     @yield('content')
   </div>
   <div class="footer">
     <p>&copy; Company 2014</p>
   </div>
-</div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/upload.js"></script>
-    <script type="text/javascript" src="js/notifications.js"></script>      
+</div>    
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular-resource/angular-resource.min.js"></script>
+    <script src="vendor/angular-route/angular-route.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/app.js"></script>    
   </body>
 </html>

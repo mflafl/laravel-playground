@@ -1,0 +1,77 @@
+angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
+  $interpolateProvider.startSymbol('<%');
+  $interpolateProvider.endSymbol('%>');
+})
+
+.config(function($routeProvider) {
+  $routeProvider
+    .when('/', {
+    controller: 'IndexCtrl',
+  })
+    .otherwise({
+    redirectTo: '/'
+  });
+})
+
+.run(function($http, $rootScope) {
+  if (typeof(WebSocket) == "undefined") {
+    alert("Your browser does not support WebSockets. Try to use Chrome or Safari.");
+  } else {
+    ws = new WebSocket("ws://localhost:8080");
+
+    console.log('try to open');
+    ws.onopen = function() {
+      console.log('open');
+      ws.send('login');
+    }
+
+    ws.onmessage = function(event) {
+      console.log(event.data);
+      var data = jQuery.parseJSON(event.data);
+      switch (data.action) {
+        case 'login':
+          $('input[name=username]').val(data.parameters.username);
+          break;
+        case 'convert.progress':
+
+          break;
+
+        case 'convert.success':
+
+          break;
+      }
+    }
+
+    ws.onclose = function(event) {
+      console.log("closed((");
+    }
+
+    ws.onerror = function(event) {
+      console.log("error((");
+    }
+  }
+
+
+  $rootScope.filesToUpload = [];
+  $('input[name=file]').on('change', function(event) {
+    var files = event.target.files || event.originalEvent.dataTransfer.files;
+    $.each(files, function(index, file) {
+      console.log(file);
+      $rootScope.filesToUpload.push(file);
+    });
+  });
+})
+
+
+.controller('IndexCtrl', function($scope, $rootScope) {
+  $rootScope.messages = [];
+  $scope.filesToUpload = []
+
+  $scope.convert = function() {
+    /*var message = {
+      type: 'success',
+      text: 'test'
+    }
+    $rootScope.messages.push(message);*/
+  }
+})

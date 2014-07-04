@@ -36,7 +36,7 @@ return array(
             'vhost'          => '',
             'login'          => '',
             'password'       => '',
-            'queue'          => 'convert', // name of the default queue
+            'queue'          => 'test', // name of the default queue
             'exchange_name'  => 'exchange', // name of the exchange
             // Type of your exchange
             // Can be AMQP_EX_TYPE_DIRECT or AMQP_EX_TYPE_FANOUT
@@ -77,9 +77,6 @@ return array(
 			'driver' => 'redis',
 			'queue'  => 'default',
 		),
-    
-    
-
 	),
 
 	/*
@@ -94,9 +91,6 @@ return array(
 	*/
 
 	'failed' => array(
-
 		'database' => 'mysql', 'table' => 'failed_jobs',
-
 	),
-
 );
