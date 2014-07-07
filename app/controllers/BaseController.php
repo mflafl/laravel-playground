@@ -27,18 +27,21 @@ class BaseController extends Controller {
 				'username' => Input::get('username')
 			),
 			array(
-				'file' => 'required|mimes:mpga',
+				'file' => 'required|mimes:mpga,ogx',
 				'username' => 'required'
 			)
 		);
 
+		$errors = array();
+		
 		if ($validator->fails()) {
-			$messages = $validator->messages();
-			echo $messages;			
+			$errors = $validator->messages()->getMessages();
 		} else {
 			$username = Input::get('username');
-			$filename = $username.time();			
+			$filename = $username.time();
+
 			$uploaded = Input::file('file')->move('uploads', $filename);
+
 			$data = array(
 				'filename' => $filename,
 				'file' => $uploaded->getRealPath(),
@@ -46,6 +49,7 @@ class BaseController extends Controller {
 			);
 			Queue::push('convertHandler', $data);			
 		}
-		exit();
+
+		return Response::json(array('errors' => $errors));		
 	}
 }

@@ -4,10 +4,10 @@ class convertHandler {
     public function fire($job, $data)
     {
       $inputPath = $data['file'];
-      $targetFilename = time().'.ogg';  
+      $targetFilename = time().'.mp3';  
       $outputPath = public_path() . '/' . $targetFilename;
       
-      Sonus::convert()->input($inputPath)->output($outputPath)->progress($data['filename'])->go();
+      Sonus::convert()->input($inputPath)->output($outputPath)->progress($data['filename'])->go('-b:a 64k -ac 1');
       File::delete(public_path().'/uploads/'.$data['filename']);
 
       $eventData = array(

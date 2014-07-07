@@ -35,9 +35,9 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
         case 'convert.progress':
 
           break;
-
         case 'convert.success':
-
+          $('#downloadLink').attr('href', data.parameters.url.replace(/\\/g, ''));
+          $('#myModal').modal();
           break;
       }
     }
@@ -51,7 +51,6 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
     }
   }
 
-
   $rootScope.filesToUpload = [];
   $('input[name=file]').on('change', function(event) {
     var files = event.target.files || event.originalEvent.dataTransfer.files;
@@ -60,18 +59,61 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
       $rootScope.filesToUpload.push(file);
     });
   });
+
+  $('form').on('submit', function() {
+    return false;
+  })
 })
 
 
-.controller('IndexCtrl', function($scope, $rootScope) {
+.controller('IndexCtrl', function($scope, $rootScope, $http) {
   $rootScope.messages = [];
-  $scope.filesToUpload = []
+  $scope.filesToUpload = [];
 
-  $scope.convert = function() {
-    /*var message = {
-      type: 'success',
-      text: 'test'
+  $scope.convert = function(e) {
+    var form = $('form')[0],
+      formData = new FormData(form);
+
+    // Prevent multiple submisions
+    if ($(form).data('loading') === true) {
+      return;
     }
-    $rootScope.messages.push(message);*/
+    $(form).data('loading', true);
+
+    // Add selected files to FormData which will be sent
+    if ($scope.filesToUpload) {
+      $.each($scope.filesToUpload, function(index, file) {
+        formData.append('cover[]', file);
+      });
+    }
+
+    $http.post($('form').attr('action'), formData, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    })
+      .success(function(response) {
+      $(form).data('loading', false);
+      $rootScope.messages = [];
+      if (Object.keys(response.errors).length) {
+        angular.forEach(response.errors, function(value, key) {
+          var message = {
+            type: 'danger',
+            text: value.toString()
+          }
+          $rootScope.messages.push(message);
+        });
+      } else {
+        var message = {
+          type: 'success',
+          text: 'Successfully uploaded. Link to the converted file will be available soon'
+        }
+        $rootScope.messages.push(message);
+      }
+    })
+      .error(function() {
+      $(form).data('loading', false);
+    });
   }
-})
+});
