@@ -3,15 +3,25 @@
 * Install vendors
 ```sh
   $ composer install
+  $ bower install
 ```
-* Setup and Run WebSocket server
+* Setup and Run WebSocket server (tcp://localhost:5555, ws://localhost:8080)
+
 ```sh
   $ git clone ssh://sc@sourcecontrol.masterofcode.com:2222/ruslan.palagin/gscore_websocket.git
 ```
 
 * Install ffmpeg
 
-* Check ffmpeg library path settings - app/config/config.php
+* Check ffmpeg settings - app/config/config.php (link to vendor/rafasamp/sonus/src/config/config.php, must be writable)
+```sh
+return array(
+   'ffmpeg'		   => '/usr/bin/ffmpeg',
+   'ffprobe'        => '/usr/bin/ffprobe',
+   'progress' => true,
+   'tmp_dir'      => '/tmp/'
+);
+```
 
 * Install rabitmq, check rabitmq server settings (app/config/queue.php)
 ```sh
