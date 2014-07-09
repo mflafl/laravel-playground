@@ -5,11 +5,13 @@
   $ composer install
   $ bower install
 ```
-* Setup and Run WebSocket server (tcp://localhost:5555, ws://localhost:8080)
+* Setup WebSocket server (tcp://localhost:5555, ws://localhost:8080)
 
 ```sh
   $ git clone ssh://sc@sourcecontrol.masterofcode.com:2222/ruslan.palagin/gscore_websocket.git
 ```
+
+* Apply gscore_websocket.patch
 
 * Install ffmpeg
 
