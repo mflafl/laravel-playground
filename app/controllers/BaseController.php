@@ -7,7 +7,7 @@ class BaseController extends Controller {
 	/**
 	 * Upload file page.
 	 *
-	 * @return void
+	 * @return view
 	 */
 	protected function uploadFormView()
 	{
@@ -64,9 +64,10 @@ class BaseController extends Controller {
 	{
 		$errors = array();
 		$responseData = array();
+		$progressValue = 0;
+
 		$id = Input::get('id');
 		$progress = json_decode(Sonus::getProgress($id));
-		$progressValue = 0;
 
 		if ($progress) {
 			$progressValue = $progress->Progress;

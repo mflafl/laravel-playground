@@ -38,7 +38,7 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
           $rootScope.$apply(function() {
             $rootScope.messages = [];
             $rootScope.progress = 0;
-            $rootScope.fileIsConverted = true;            
+            $rootScope.fileIsConverted = true;
           });
           $('#downloadLink').attr('href', data.parameters.url.replace(/\\/g, ''));
           $('#myModal').modal();

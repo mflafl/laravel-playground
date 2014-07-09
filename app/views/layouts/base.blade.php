@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audio converter</title>
-    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap-theme.min.css">
   </head>
   <body>
@@ -28,12 +28,11 @@
   <div class="footer">
     <p>&copy; Company 2014</p>
   </div>
-</div>    
+</div>
     <script src="vendor/jquery/dist/jquery.min.js"></script>
     <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
-    <script src="vendor/angular-resource/angular-resource.min.js"></script>
     <script src="vendor/angular-route/angular-route.js"></script>    
-    <script src="js/app.js"></script>    
+    <script src="js/app.js"></script>
   </body>
 </html>

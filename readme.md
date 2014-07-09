@@ -4,9 +4,16 @@
 ```sh
   $ composer install
 ```
-* Install ffmpeg (binary path - ffmpeg)
+* Setup and Run WebSocket server
+```sh
+  $ git clone ssh://sc@sourcecontrol.masterofcode.com:2222/ruslan.palagin/gscore_websocket.git
+```
 
-* Check rabitmq server settings (app/config/queue.php)
+* Install ffmpeg
+
+* Check ffmpeg library path settings - app/config/config.php
+
+* Install rabitmq, check rabitmq server settings (app/config/queue.php)
 ```sh
   'rabbitmq' => array(
         'driver'         => 'rabbitmq',
@@ -25,9 +32,9 @@
         'exchange_flags' => AMQP_DURABLE,
     )
 ```
-* Start queue listener (run from project root)
+* Start queue listener (from project root)
 ```sh
   $ php artisan queue:listen
 ```
 
-* Upload mp3 files (output to public/*.ogg)
+* Upload mp3/ogg files
