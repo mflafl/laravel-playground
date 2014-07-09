@@ -17,7 +17,7 @@ class BaseController extends Controller {
 	/**
 	 * Upload form handler
 	 *
-	 * @return void
+	 * @return Response
 	 */
 	protected function uploadFormProcess()
 	{
@@ -33,13 +33,15 @@ class BaseController extends Controller {
 		);
 
 		$errors = array();
+		$responseData = array();
 		
 		if ($validator->fails()) {
 			$errors = $validator->messages()->getMessages();
 		} else {
 			$username = Input::get('username');
 			$filename = $username.time();
-
+			$responseData['id'] = $filename;
+			
 			$uploaded = Input::file('file')->move('uploads', $filename);
 
 			$data = array(
@@ -50,6 +52,27 @@ class BaseController extends Controller {
 			Queue::push('convertHandler', $data);			
 		}
 
-		return Response::json(array('errors' => $errors));		
+		return Response::json(array('errors' => $errors, 'data' => $responseData));
+	}
+	
+	/**
+	 * convert Progress
+	 *
+	 * @return Response
+	 */
+	protected function convertProgress()
+	{
+		$errors = array();
+		$responseData = array();
+		$id = Input::get('id');
+		$progress = json_decode(Sonus::getProgress($id));
+		$progressValue = 0;
+
+		if ($progress) {
+			$progressValue = $progress->Progress;
+		}
+
+		$responseData['progress'] = $progressValue;
+		return Response::json(array('errors' => $errors, 'data' => $responseData));
 	}
 }

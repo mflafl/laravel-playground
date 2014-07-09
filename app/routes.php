@@ -13,3 +13,4 @@
 
 Route::get('/', 'BaseController@uploadFormView');
 Route::post('convert', 'BaseController@uploadFormProcess');
+Route::post('progress', 'BaseController@convertProgress');

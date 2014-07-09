@@ -20,7 +20,8 @@
         <li class="alert alert-<% message.type %>" ng-repeat="message in messages">
             <% message.text %>
         </li>
-    </ul>      
+    </ul>
+    <div ng-show="progress">Converted: <% progress %> %</div>
     @yield('content')
   </div>
 

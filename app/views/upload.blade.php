@@ -8,7 +8,7 @@
   </ul>
 <?php endif; ?>
 <div>
-<?php echo Form::open(array('url' => 'convert', 'files' => true)); ?>
+<?php echo Form::open(array('url' => 'convert', 'files' => true, 'ng-submit' => 'convert(); $event.preventDefault()')); ?>
 <p><?php echo Form::file('file', $attributes = array()); ?></p>
 <?php echo Form::submit('Convert', ['class' => 'btn btn-lg btn-success', 'ng-click' => 'convert()']); ?>
 <?php echo Form::hidden('username'); ?>

@@ -14,14 +14,16 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
 })
 
 .run(function($http, $rootScope) {
+  $rootScope.messages = [];
+  $rootScope.fileIsConverted = false;
+  $rootScope.progress = 0;
+
   if (typeof(WebSocket) == "undefined") {
     alert("Your browser does not support WebSockets. Try to use Chrome or Safari.");
   } else {
     ws = new WebSocket("ws://localhost:8080");
 
-    console.log('try to open');
     ws.onopen = function() {
-      console.log('open');
       ws.send('login');
     }
 
@@ -32,10 +34,12 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
         case 'login':
           $('input[name=username]').val(data.parameters.username);
           break;
-        case 'convert.progress':
-
-          break;
         case 'convert.success':
+          $rootScope.$apply(function() {
+            $rootScope.messages = [];
+            $rootScope.progress = 0;
+            $rootScope.fileIsConverted = true;            
+          });
           $('#downloadLink').attr('href', data.parameters.url.replace(/\\/g, ''));
           $('#myModal').modal();
           break;
@@ -43,34 +47,19 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
     }
 
     ws.onclose = function(event) {
-      console.log("closed((");
+      console.log("ws closed");
     }
 
     ws.onerror = function(event) {
-      console.log("error((");
+      console.log("ws error");
     }
   }
-
-  $rootScope.filesToUpload = [];
-  $('input[name=file]').on('change', function(event) {
-    var files = event.target.files || event.originalEvent.dataTransfer.files;
-    $.each(files, function(index, file) {
-      console.log(file);
-      $rootScope.filesToUpload.push(file);
-    });
-  });
-
-  $('form').on('submit', function() {
-    return false;
-  })
 })
 
+.controller('IndexCtrl', function($scope, $rootScope, $http, $interval) {
+  $scope.fileId = 0;
 
-.controller('IndexCtrl', function($scope, $rootScope, $http) {
-  $rootScope.messages = [];
-  $scope.filesToUpload = [];
-
-  $scope.convert = function(e) {
+  $scope.convert = function() {
     var form = $('form')[0],
       formData = new FormData(form);
 
@@ -80,13 +69,6 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
     }
     $(form).data('loading', true);
 
-    // Add selected files to FormData which will be sent
-    if ($scope.filesToUpload) {
-      $.each($scope.filesToUpload, function(index, file) {
-        formData.append('cover[]', file);
-      });
-    }
-
     $http.post($('form').attr('action'), formData, {
       transformRequest: angular.identity,
       headers: {
@@ -94,8 +76,9 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
       }
     })
       .success(function(response) {
-      $(form).data('loading', false);
       $rootScope.messages = [];
+
+      $(form).data('loading', false);
       if (Object.keys(response.errors).length) {
         angular.forEach(response.errors, function(value, key) {
           var message = {
@@ -110,6 +93,27 @@ angular.module('audioConverter', ['ngRoute'], function($interpolateProvider) {
           text: 'Successfully uploaded. Link to the converted file will be available soon'
         }
         $rootScope.messages.push(message);
+        $scope.fileId = response.data.id;
+
+        // Converting progress calls
+        var timer = $interval(function() {
+          if ($rootScope.fileIsConverted) {
+            $interval.cancel(timer);
+            $rootScope.fileIsConverted = false;
+            return;
+          }
+          $http({
+            method: 'POST',
+            url: "progress",
+            data: {
+              id: $scope.fileId
+            }
+          })
+            .success(function(response) {
+            $rootScope.progress = response.data.progress;
+          })
+        }, 1000);
+
       }
     })
       .error(function() {
