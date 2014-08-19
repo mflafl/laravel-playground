@@ -121,6 +121,7 @@ return array(
     'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',    
     'App\WebSocket\WebSocketServiceProvider',
     'Rafasamp\Sonus\SonusServiceProvider',
+    'Adavkay\Soundcloud\SoundcloudServiceProvider',
 	),
 
 	/*

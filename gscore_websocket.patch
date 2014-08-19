@@ -3,7 +3,7 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- src/Gscore/WsApp.php	(revision cc310d77cde31b327d04d06983f88fafd75e5fef)
+--- src/Gscore/WsApp.php	(revision 0acf5d5d49887d4901ccf01adf2afcd6ba896deb)
 +++ src/Gscore/WsApp.php	(revision )
 @@ -12,22 +12,19 @@
      public function __construct( $config ) {
@@ -25,18 +25,35 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 -
      public function onMessage(ConnectionInterface $client, $msg) {
 -        $response = $this->loginAction( $client, $msg );
-+        $client->username = $client->resourceId;
++        $client->username = $msg;
 +        $this->clients->attach($client);
 +        $response = new JsonMessage('login', array(
 +            'status' => 200,
-+            'username' => $client->resourceId
++            'resource_id' => $client->resourceId
 +            ));                                                                   
          Sender::send($client , $response);
 +        echo $this->getOnline();
      }
  
      public function onClose(ConnectionInterface $conn) {
-@@ -63,7 +60,7 @@
+@@ -43,14 +40,14 @@
+         $conn->close();
+     }
+ 
+-    public function onZMQMessage( $zmqMessage ){
++    public function onZMQMessage( $zmqMessage ) {
+         $entry = json_decode($zmqMessage , true);
+         $userNames = $entry['usernames'];
+         $message = JsonMessage::createFromArray($entry['message']);
+         echo "onZMQ message: start to send clients" . PHP_EOL;
+         $time1 = time();
+ 
+-        if ($userNames === array()){
++        if ($userNames === array()) {
+             foreach ($this->clients as $client) {
+                 Sender::send($client, $message);
+             }
+@@ -64,7 +61,7 @@
          echo "onZMQ message: sended to clients in ". (time() - $time1) . 'mc'. PHP_EOL;
      }
  
@@ -45,7 +62,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
          $result = '';
          foreach ($this->clients as $client){
              $result .= self::getConnectionInfo($client);
-@@ -71,12 +68,11 @@
+@@ -72,12 +69,11 @@
          return 'ONLINE: '. $result . PHP_EOL ;
      }
  
@@ -60,7 +77,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
          $wsseValidator = new WsseValidator();
          if ($wsseValidator->isValid($msg)){
              $from->username = $wsseValidator->getUsername();
-@@ -90,5 +86,4 @@
+@@ -91,5 +87,4 @@
              return new JsonMessage('login', array('status' => 401));
          }
      }

@@ -1,18 +1,13 @@
-@extends('layouts.base')
-@section('content')
-<?php if (count($errors)): ?>
-  <ul class="alert alert-danger">
-    <?php foreach ($errors->all('<li>:message</li>') as $message): ?>
-      <?php print $message ?>
-    <?php endforeach ?>
-  </ul>
-<?php endif; ?>
 <div>
-<?php echo Form::open(array('url' => 'convert', 'files' => true, 'ng-submit' => 'convert(); $event.preventDefault()')); ?>
-<p><?php echo Form::file('file', $attributes = array()); ?></p>
-<?php echo Form::submit('Convert', ['class' => 'btn btn-lg btn-success', 'ng-click' => 'convert()']); ?>
-<?php echo Form::hidden('username'); ?>
-<?php echo Form::close();?>
+  <form enctype="multipart/form-data" ng-submit="convert(); $event.preventDefault()" accept-charset="UTF-8" action="http://lv.loc/convert" method="POST">
+  <p><input type="file" name="file"></p>
+  <p ng-show="soundCloudLoggedIn">
+    <input type="checkbox" name="sc_publish">Publish to SoundCloud
+  </p>
+  <input type="submit" value="Convert" class="btn btn-lg btn-success">
+  <input type="hidden" name="username">
+  <input type="hidden" name="sc_token" value="<% soundCloudAccessToken %>">
+  </form>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -29,4 +24,3 @@
     </div>
   </div>
 </div>
-@endsection

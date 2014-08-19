@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', 'BaseController@uploadFormView');
+Route::get('/', 'BaseController@index');
 Route::post('convert', 'BaseController@uploadFormProcess');
 Route::post('progress', 'BaseController@convertProgress');

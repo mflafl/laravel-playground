@@ -11,11 +11,9 @@
   $ git clone ssh://sc@sourcecontrol.masterofcode.com:2222/ruslan.palagin/gscore_websocket.git
 ```
 
-* Apply gscore_websocket.patch
+* Apply gscore_websocket.patch (located at project root)
 
-* Install ffmpeg
-
-* Check ffmpeg settings - app/config/config.php (link to vendor/rafasamp/sonus/src/config/config.php, must be writable)
+* Install ffmpeg, check ffmpeg settings - app/config/packages/rafasamp/sonus/config.php
 ```sh
 return array(
    'ffmpeg'		   => '/usr/bin/ffmpeg',

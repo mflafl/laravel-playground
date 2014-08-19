@@ -9,9 +9,10 @@ class BaseController extends Controller {
 	 *
 	 * @return view
 	 */
-	protected function uploadFormView()
+	protected function index()
 	{
-		return View::make('upload');
+    $data = array('foo'=>'test');
+		return View::make('app', $data);
 	}
 
 	/**
@@ -37,18 +38,25 @@ class BaseController extends Controller {
 		
 		if ($validator->fails()) {
 			$errors = $validator->messages()->getMessages();
-		} else {
+    } else {
 			$username = Input::get('username');
 			$filename = $username.time();
 			$responseData['id'] = $filename;
-			
-			$uploaded = Input::file('file')->move('uploads', $filename);
+
+			$uploaded = Input::file('file');
+      $clientName = $uploaded->getClientOriginalName();
+
+      $uploaded = $uploaded->move('uploads', $filename);
 
 			$data = array(
+        'client_name' => $clientName,
 				'filename' => $filename,
 				'file' => $uploaded->getRealPath(),
-				'username' => Input::get('username')
+				'username' => Input::get('username'),
+        'sc_publish' => Input::get('sc_publish'),
+        'sc_token' => Input::get('sc_token')
 			);
+
 			Queue::push('convertHandler', $data);			
 		}
 
