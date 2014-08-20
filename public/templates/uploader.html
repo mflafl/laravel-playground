@@ -1,3 +1,14 @@
+<h1>Upload file</h1>
+<ul ng-show="messages.length" class="messages">
+    <li class="alert alert-<% message.type %>" ng-repeat="message in messages">
+        <% message.text %>
+    </li>
+</ul>
+<div ng-show="progress" class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="<% progress %>" aria-valuemin="0" aria-valuemax="100" style="width: <% progress %>%;">
+    <% progress %>%
+  </div>
+</div>
 <div>
   <form enctype="multipart/form-data" ng-submit="convert(); $event.preventDefault()" accept-charset="UTF-8" action="http://lv.loc/convert" method="POST">
   <p><input type="file" name="file"></p>
