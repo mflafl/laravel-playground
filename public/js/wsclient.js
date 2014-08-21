@@ -1,15 +1,20 @@
 app.service('WebSocketClient', function($rootScope) {
+  this.ws = {};
+  this.disconnect = function() {
+    this.ws.close();
+  }
   this.init = function(address, username) {
+    var self = this;
     if (typeof(WebSocket) == "undefined") {
       alert("Your browser does not support WebSockets. Try to use Chrome or Safari.");
     } else {
-      ws = new WebSocket(address);
+      this.ws = new WebSocket(address);
 
-      ws.onopen = function() {
-        ws.send(username);
+      this.ws.onopen = function() {
+        self.ws.send(username);
       }
 
-      ws.onmessage = function(event) {
+      this.ws.onmessage = function(event) {
         var data = jQuery.parseJSON(event.data);
         switch (data.action) {
           case 'login':
@@ -27,11 +32,11 @@ app.service('WebSocketClient', function($rootScope) {
         }
       }
 
-      ws.onclose = function(event) {
+      this.ws.onclose = function(event) {
         console.log("ws closed");
       }
 
-      ws.onerror = function(event) {
+      this.ws.onerror = function(event) {
         console.log("ws error");
       }
     }

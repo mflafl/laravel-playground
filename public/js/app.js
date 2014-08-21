@@ -1,4 +1,4 @@
-var app = angular.module('audioConverter', ['ngRoute', 'facebook', 'configuration'], function($interpolateProvider) {
+var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook', 'configuration'], function($interpolateProvider) {
   $interpolateProvider.startSymbol('<%');
   $interpolateProvider.endSymbol('%>');
 })
@@ -15,12 +15,25 @@ var app = angular.module('audioConverter', ['ngRoute', 'facebook', 'configuratio
     controller: 'AppLoginCtrl',
     templateUrl: '/templates/login.html',
   })
+    .when('/files', {
+    controller: 'AppConvertedFilesCtrl',
+    templateUrl: '/templates/files.html',
+  })    
     .otherwise({
     redirectTo: '/'
   });
 })
 
-.run(function($http, $rootScope, Facebook, SoundCloud, Config, $location) {
+.factory('ConvertedFiles', function($resource) {
+  return $resource('/user/:email/files', {}, {
+    query: {
+      method: 'GET',
+      isArray: true
+    }
+  });
+})
+
+.run(function($http, $rootScope, Facebook, SoundCloud, Config, WebSocketClient, ConvertedFiles, $location) {
   console.log('Running....');
   $rootScope.messages = [];
   $rootScope.fileIsConverted = false;
@@ -31,8 +44,15 @@ var app = angular.module('audioConverter', ['ngRoute', 'facebook', 'configuratio
   SoundCloud.init(Config.soundcloud_api_key);
 
   Facebook.getLoginStatus(function(response) {
-    if (response.status === 'connected') {      
-      $rootScope.fbUid = response.authResponse.userID;      
+    if (response.status === 'connected') {
+      $rootScope.fbUid = response.authResponse.userID;
+
+      Facebook.api('/me', function(response) {
+        $rootScope.fbUser = response;
+        WebSocketClient.init(Config.websocket_address, $rootScope.fbUser.email);
+        $location.path('/');
+      });
+
     } else if (response.status === 'not_authorized') {
       $location.path('/login');
       // the user is logged in to Facebook,
@@ -48,7 +68,8 @@ var app = angular.module('audioConverter', ['ngRoute', 'facebook', 'configuratio
       $rootScope.fbUid = response.authResponse.userID;
       Facebook.api('/me', function(response) {
         $rootScope.fbUser = response;
-        $location.path('/');        
+        WebSocketClient.init(Config.websocket_address, $rootScope.fbUser.email);
+        $location.path('/');
       });
     }
   });
@@ -57,6 +78,7 @@ var app = angular.module('audioConverter', ['ngRoute', 'facebook', 'configuratio
     if (response.status === 'unknown') {
       $rootScope.fbUid = 0;
       $rootScope.fbUser = false;
+      WebSocketClient.disconnect();
       $location.path('/login');
     }
   });

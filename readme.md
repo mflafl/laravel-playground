@@ -5,6 +5,10 @@
   $ composer install
   $ bower install
 ```
+* Configure database: app/config/database.php
+
+* Import database - schema.sql,
+
 * Setup WebSocket server (tcp://localhost:5555, ws://localhost:8080)
 
 ```sh

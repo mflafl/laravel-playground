@@ -1,6 +1,11 @@
-app.controller('AppLoginCtrl', function($scope, $rootScope, $http, $interval, Facebook, $location) {
-  
+app.controller('AppConvertedFilesCtrl', function($scope, $rootScope, ConvertedFiles) {
+  $scope.userFiles = ConvertedFiles.query({
+    email: $rootScope.fbUser.email
+  });
+  console.log($scope.userFiles);
 })
+
+app.controller('AppLoginCtrl', function($scope) {})
 
 .controller('SoundCloudLoginCtrl', function($scope, $rootScope, $http, $interval, SoundCloud) {
   $rootScope.soundCloudLoggedIn = SoundCloud.user;
@@ -21,15 +26,13 @@ app.controller('AppLoginCtrl', function($scope, $rootScope, $http, $interval, Fa
   }
 })
 
-.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, WebSocketClient, Config) {
-  WebSocketClient.init(Config.websocket_address, $rootScope.fbUser.email);
-
+.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Config) {
   $scope.fileId = 0;
 
   $scope.convert = function() {
     $rootScope.messages = [];
-    
-    if (!$rootScope.fbUid) {      
+
+    if (!$rootScope.fbUid) {
       var message = {
         type: 'danger',
         text: 'Login to facebook to use converter'

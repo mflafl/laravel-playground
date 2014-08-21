@@ -1,0 +1,6 @@
+<div class="list-group">
+  <a ng-repeat="file in userFiles | orderBy:created_at " href="<% file.filepath %>" class="list-group-item">
+    <h4 class="list-group-item-heading"><% file.filename %></h4>
+    <p class="list-group-item-text"><% file.created_at %></p>
+  </a>
+</div>

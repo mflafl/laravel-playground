@@ -11,8 +11,7 @@ class BaseController extends Controller {
 	 */
 	protected function index()
 	{
-    $data = array('foo'=>'test');
-		return View::make('app', $data);
+		return View::make('app');
 	}
 
 	/**
@@ -83,5 +82,11 @@ class BaseController extends Controller {
 
 		$responseData['progress'] = $progressValue;
 		return Response::json(array('errors' => $errors, 'data' => $responseData));
+	}
+	
+	
+	protected function getUserConvertedfiles($email) {
+		$user = User::getOrCreate($email);		
+		return $user->files()->get()->toJson();
 	}
 }
