@@ -18,6 +18,12 @@
     <div ng-show="fbUid" class="navbar-header">
       <a class="navbar-brand" href="#">Upload</a>
       <a class="navbar-brand" href="#files">My files</a>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="user-search form-control" placeholder="Find friends...">
+        </div>
+        <button type="submit" class="btn btn-default">Add</button>
+      </form>        
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,11 +58,13 @@
     <script src="vendor/angular-route/angular-route.js"></script>
     <script src="vendor/angular-resource/angular-resource.js"></script>
     <script src="vendor/angular-facebook/lib/angular-facebook.js"></script>
-    <script src="http://connect.soundcloud.com/sdk.js"></script>
+    <script src="vendor/typeahead.js/dist/typeahead.bundle.js"></script>      
+    <script src="http://connect.soundcloud.com/sdk.js"></script>      
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
     <script src="js/soundcloud.js"></script>
     <script src="js/wsclient.js"></script>    
     <script src="js/controllers.js"></script>
+    <script src="js/autocomplete.js"></script>
   </body>
 </html>

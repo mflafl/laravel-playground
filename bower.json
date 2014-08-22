@@ -6,6 +6,7 @@
     "angular-route": "latest",
     "angular-resource": "latest",
     "angular-facebook": "latest",
-    "bootstrap": "latest"
+    "bootstrap": "latest",
+    "typeahead.js":"latest"
   }
 }
