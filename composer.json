@@ -8,7 +8,8 @@
 		"fintech-fab/laravel-queue-rabbitmq": "4.*",
 		"rafasamp/sonus": "~1.0",
     "guzzlehttp/guzzle": "~4.0",
-    "adavkay/laravel-soundcloud": "dev-master"
+    "adavkay/laravel-soundcloud": "dev-master",
+    "sammyk/laravel-facebook-sdk": "~1.1"
 	},
 	"autoload": {
 		"classmap": [

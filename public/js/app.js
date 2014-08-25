@@ -4,7 +4,10 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
 })
 
 .config(function($routeProvider, FacebookProvider, Config) {
-  FacebookProvider.init(Config.facebook_api_key);
+  FacebookProvider.init({
+    appId: Config.facebook_api_key,
+    status: false
+  });
 
   $routeProvider
     .when('/', {
@@ -18,14 +21,14 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
     .when('/files', {
     controller: 'AppConvertedFilesCtrl',
     templateUrl: '/templates/files.html',
-  })    
+  })
     .otherwise({
     redirectTo: '/'
   });
 })
 
-.factory('ConvertedFiles', function($resource) {
-  return $resource('/user/:email/files', {}, {
+/*.factory('ConvertedFiles', function($resource) {
+  return $resource('/user/files', {}, {
     query: {
       method: 'GET',
       isArray: true
@@ -33,53 +36,61 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
   });
 })
 
-.run(function($http, $rootScope, Facebook, SoundCloud, Config, WebSocketClient, ConvertedFiles, $location) {
-  console.log('Running....');
+.factory('Users', function($resource) {
+  return $resource('/users', {}, {
+    query: {
+      method: 'GET',
+      isArray: true
+    }
+  });
+})*/
+
+.run(function($http, $rootScope, Facebook, SoundCloud, Config, WebSocketClient, $location, UserSearch, $resource) {
   $rootScope.messages = [];
   $rootScope.fileIsConverted = false;
   $rootScope.progress = 0;
-  $rootScope.fbUid = 0;
   $rootScope.fbUser = false;
 
   SoundCloud.init(Config.soundcloud_api_key);
 
   Facebook.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-      $rootScope.fbUid = response.authResponse.userID;
-
-      Facebook.api('/me', function(response) {
-        $rootScope.fbUser = response;
-        WebSocketClient.init(Config.websocket_address, $rootScope.fbUser.email);
-        $location.path('/');
-      });
-
-    } else if (response.status === 'not_authorized') {
-      $location.path('/login');
-      // the user is logged in to Facebook,
-      // but has not authenticated your app
-    } else {
-      $location.path('/login');
-      // the user isn't logged in to Facebook.
+    if (response.status !== 'connected') {
+      if (response.status === 'not_authorized') {
+        // the user is logged in to Facebook,
+        // but has not authenticated your app
+        $location.path('/login');
+      } else {
+        // the user isn't logged in to Facebook.
+        $location.path('/login');
+      }
     }
   });
 
   Facebook.subscribe('auth.login', function(response) {
     if (response.status === 'connected') {
-      $rootScope.fbUid = response.authResponse.userID;
-      Facebook.api('/me', function(response) {
-        $rootScope.fbUser = response;
-        WebSocketClient.init(Config.websocket_address, $rootScope.fbUser.email);
+      $http({
+        method: 'POST',
+        url: 'user',
+        data: {
+          "access_token": response.authResponse.accessToken
+        },
+      }).
+      success(function(response) {
+        $rootScope.fbUser = response.data;
+        WebSocketClient.init(Config.websocket_address, response.data.email);
+        UserSearch.init();
         $location.path('/');
-      });
-    }
+      }).
+      error(function(response) {});
+    } else {}
   });
 
   Facebook.subscribe('auth.logout', function(response) {
     if (response.status === 'unknown') {
-      $rootScope.fbUid = 0;
       $rootScope.fbUser = false;
       WebSocketClient.disconnect();
       $location.path('/login');
     }
   });
+
 })

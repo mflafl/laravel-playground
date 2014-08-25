@@ -1,11 +1,22 @@
-app.controller('AppConvertedFilesCtrl', function($scope, $rootScope, ConvertedFiles) {
-  $scope.userFiles = ConvertedFiles.query({
-    email: $rootScope.fbUser.email
-  });
-  console.log($scope.userFiles);
+app.controller('AppUserSearchCtrl', function($scope, $rootScope, UserSearch, $resource) {
+
 })
 
-app.controller('AppLoginCtrl', function($scope) {})
+.controller('AppConvertedFilesCtrl', function($scope, $rootScope, $resource) {
+  $scope.filesResource = $resource('/user/files', {}, {
+    get: {
+      method: 'GET',
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+      isArray: true
+    }
+  });
+
+  $scope.userFiles = $scope.filesResource.get();
+})
+
+.controller('AppLoginCtrl', function($scope) {})
 
 .controller('SoundCloudLoginCtrl', function($scope, $rootScope, $http, $interval, SoundCloud) {
   $rootScope.soundCloudLoggedIn = SoundCloud.user;
@@ -32,7 +43,8 @@ app.controller('AppLoginCtrl', function($scope) {})
   $scope.convert = function() {
     $rootScope.messages = [];
 
-    if (!$rootScope.fbUid) {
+
+    if (!$rootScope.fbUser) {
       var message = {
         type: 'danger',
         text: 'Login to facebook to use converter'
@@ -41,20 +53,24 @@ app.controller('AppLoginCtrl', function($scope) {})
       return;
     }
 
-    var form = $('form')[0],
-      formData = new FormData(form);
+    var form = $('#convertForm'),
+      formData = new FormData(form[0]);
 
     // Prevent multiple submisions
-    if ($(form).data('loading') === true) {
+    if (form.data('loading') === true) {
       return;
     }
-    $(form).data('loading', true);
+    form.data('loading', true);
 
-    $http.post($('form').attr('action'), formData, {
-      transformRequest: angular.identity,
+    $http({
+      method: 'POST',
+      url: form.attr('action'),
+      data: formData,
       headers: {
-        'Content-Type': undefined
-      }
+        'Content-Type': undefined,
+        Facebook: $rootScope.fbUser.access_token
+      },
+      transformRequest: angular.identity
     })
       .success(function(response) {
       $rootScope.messages = [];

@@ -14,4 +14,7 @@
 Route::get('/', 'BaseController@index');
 Route::post('convert', 'BaseController@uploadFormProcess');
 Route::post('progress', 'BaseController@convertProgress');
-Route::get('user/{email}/files', 'BaseController@getUserConvertedfiles');
+
+Route::post('user', 'BaseController@login');
+Route::get('user/files', 'BaseController@getUserConvertedfiles');
+Route::get('users', 'BaseController@getUsers');

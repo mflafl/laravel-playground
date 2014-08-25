@@ -15,10 +15,10 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
-    <div ng-show="fbUid" class="navbar-header">
+    <div ng-show="fbUser" class="navbar-header">
       <a class="navbar-brand" href="#">Upload</a>
       <a class="navbar-brand" href="#files">My files</a>
-      <form class="navbar-form navbar-left" role="search">
+      <form ng-controller="AppUserSearchCtrl" class="navbar-form navbar-left" role="search">
         <div class="form-group">
           <input type="text" class="user-search form-control" placeholder="Find friends...">
         </div>
@@ -29,12 +29,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="login nav navbar-nav navbar-right">
-      <li ng-show="fbUid"><% fbUser.name %></li>
+      <li ng-show="fbUser"><% fbUser.name %></li>
         <li>
     <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true" data-scope="email,public_profile"></div>
         </li>
           <li>
-    <div ng-show="fbUid" ng-controller="SoundCloudLoginCtrl"><div class="soundcloud-login-button">
+    <div ng-show="fbUser" ng-controller="SoundCloudLoginCtrl"><div class="soundcloud-login-button">
       <a ng-click="login(); $event.preventDefault()" ng-hide="soundCloudLoggedIn" href="#"><img src="images/btn-connect-s.png" alt="Connect to SoundCloud" /></a>
       <a ng-click="logout(); $event.preventDefault()" ng-show="soundCloudLoggedIn" href="#"><img src="images/btn-disconnect-s.png" alt="Disconnect from SoundCloud" /></a>
     </div></div>          
@@ -54,7 +54,7 @@
 </div>
     <script src="vendor/jquery/dist/jquery.min.js"></script>
     <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular/angular.js"></script>
     <script src="vendor/angular-route/angular-route.js"></script>
     <script src="vendor/angular-resource/angular-resource.js"></script>
     <script src="vendor/angular-facebook/lib/angular-facebook.js"></script>
@@ -63,8 +63,8 @@
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
     <script src="js/soundcloud.js"></script>
-    <script src="js/wsclient.js"></script>    
+    <script src="js/wsclient.js"></script>
+    <script src="js/usersearch.js"></script>
     <script src="js/controllers.js"></script>
-    <script src="js/autocomplete.js"></script>
   </body>
 </html>

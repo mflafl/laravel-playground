@@ -1,7 +1,7 @@
 <?php
 
 class BaseController extends Controller {
-	
+
 	protected $layout = 'layouts.base';
 
 	/**
@@ -15,6 +15,35 @@ class BaseController extends Controller {
 	}
 
 	/**
+	 * Register
+	 *
+	 * @return JSON
+	 */
+	protected function login()
+  {
+    $accessToken = Input::get('access_token');
+    $errors = array();
+
+    Facebook::setAccessToken($accessToken);
+    $userObject = Facebook::object('me')->fields('id', 'email', 'name')->get();
+    $userData = $userObject->toArray();
+    $userData['access_token'] = $accessToken;
+
+    $user = User::find($userData['id']);
+
+    if (!$user) {
+      $user = new User();
+      $user->id = $userData['id'];
+    }
+
+    $user->access_token = $accessToken;
+    $user->email = $userData['email'];
+    $user->save();
+
+    return Response::json(array('errors' => $errors, 'data' => $userData));
+	}
+
+	/**
 	 * Upload form handler
 	 *
 	 * @return Response
@@ -23,22 +52,21 @@ class BaseController extends Controller {
 	{
 		$validator = Validator::make(
 			array(
-				'file' => Input::file('file'),
-				'username' => Input::get('username')
+				'file' => Input::file('file')
 			),
 			array(
-				'file' => 'required|mimes:mpga,ogx',
-				'username' => 'required'
+				'file' => 'required|mimes:mpga,ogx'
 			)
 		);
 
 		$errors = array();
 		$responseData = array();
-		
+
 		if ($validator->fails()) {
 			$errors = $validator->messages()->getMessages();
     } else {
-			$username = Input::get('username');
+      $user = User::current();
+			$username = $user->email;
 			$filename = $username.time();
 			$responseData['id'] = $filename;
 
@@ -48,20 +76,21 @@ class BaseController extends Controller {
       $uploaded = $uploaded->move('uploads', $filename);
 
 			$data = array(
+        'fb_user_id' => $user->id,
         'client_name' => $clientName,
 				'filename' => $filename,
 				'file' => $uploaded->getRealPath(),
-				'username' => Input::get('username'),
+				'username' => $username,
         'sc_publish' => Input::get('sc_publish'),
         'sc_token' => Input::get('sc_token')
 			);
 
-			Queue::push('convertHandler', $data);			
+			Queue::push('convertHandler', $data);
 		}
 
 		return Response::json(array('errors' => $errors, 'data' => $responseData));
 	}
-	
+
 	/**
 	 * convert Progress
 	 *
@@ -83,10 +112,21 @@ class BaseController extends Controller {
 		$responseData['progress'] = $progressValue;
 		return Response::json(array('errors' => $errors, 'data' => $responseData));
 	}
-	
-	
-	protected function getUserConvertedfiles($email) {
-		$user = User::getOrCreate($email);		
-		return $user->files()->get()->toJson();
+
+	protected function getUserConvertedfiles() {
+    $user = User::current();
+		return $user->files()->get()->toArray();
 	}
+
+  protected function getUsers() {
+    $user = User::current();
+    $data = DB::select('select email from users where id <> ?', array($user->id));
+    $result = array();
+
+    foreach ($data as $value) {
+      $result[] = $value->email;
+    }
+
+    return $result;
+  }
 }

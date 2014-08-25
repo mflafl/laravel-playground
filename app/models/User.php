@@ -1,22 +1,22 @@
 <?php
 
+use SammyK\LaravelFacebookSdk\FacebookableTrait;
+
 class User extends Eloquent {
-	public static function getOrCreate($email) {
-		$res = User::where('email', '=', $email)->get();
 
-		if ($res->count()) {
-			$user = $res[0];
-		} else {
-			$user = new User();
-			$user->email = $email;
-			$user->save();
-		}
+  use FacebookableTrait;
 
-		return $user;
-	}
+  protected $hidden = ['access_token'];
 
 	public function files()
 	{
 		return $this->hasMany('ConvertedFile');
 	}
+
+  public static function current() {
+    $accessToken = getallheaders()['Facebook'];
+    $res = User::where('access_token', '=', $accessToken)->get();
+    $user = $res[0];
+    return $user;
+  }
 }

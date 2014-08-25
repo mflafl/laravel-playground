@@ -13,6 +13,7 @@ class convertHandler {
       File::delete(public_path().'/uploads/'.$data['filename']);
 
       $eventData = array(
+        'fb_user_id' => $data['fb_user_id'],
         'username' => $data['username'],
         'filename' => $targetFilename,
         'url' => asset($targetFilename),

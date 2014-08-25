@@ -1,24 +1,40 @@
 app.service('WebSocketClient', function($rootScope) {
   this.ws = {};
-  this.disconnect = function() {
-    this.ws.close();
-  }
-  this.init = function(address, username) {
+  this.opened = false;
+
+  this.send = function(message) {
     var self = this;
+    if (this.ws.readyState === 1) {
+      this.ws.send(message);
+    } else {
+      setTimeout(function() {
+        self.send(message);
+      }, 500);
+    }
+  }
+
+  this.init = function(address, username) {
+    // already opened
+    if (this.opened) {
+      return;
+    }
+
+    var self = this;
+
     if (typeof(WebSocket) == "undefined") {
       alert("Your browser does not support WebSockets. Try to use Chrome or Safari.");
     } else {
       this.ws = new WebSocket(address);
+      this.opened = true;
 
       this.ws.onopen = function() {
-        self.ws.send(username);
+        self.send(username);
       }
 
       this.ws.onmessage = function(event) {
         var data = jQuery.parseJSON(event.data);
         switch (data.action) {
           case 'login':
-            $('input[name=username]').val(username);
             break;
           case 'convert.success':
             $rootScope.$apply(function() {
@@ -40,5 +56,9 @@ app.service('WebSocketClient', function($rootScope) {
         console.log("ws error");
       }
     }
+  }
+
+  this.disconnect = function() {
+    this.ws.close();
   }
 })

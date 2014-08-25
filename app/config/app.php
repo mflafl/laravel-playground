@@ -122,6 +122,7 @@ return array(
     'App\WebSocket\WebSocketServiceProvider',
     'Rafasamp\Sonus\SonusServiceProvider',
     'Adavkay\Soundcloud\SoundcloudServiceProvider',
+    'SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider'
 	),
 
 	/*
@@ -188,6 +189,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',    
     'WebSocket'       => 'App\WebSocket\WebSocketFacade',
     'Sonus'           => 'Rafasamp\Sonus\Facade',
+    'Facebook' => 'SammyK\LaravelFacebookSdk\FacebookFacade'
 	),
 
 );
