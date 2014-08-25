@@ -27,24 +27,6 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
   });
 })
 
-/*.factory('ConvertedFiles', function($resource) {
-  return $resource('/user/files', {}, {
-    query: {
-      method: 'GET',
-      isArray: true
-    }
-  });
-})
-
-.factory('Users', function($resource) {
-  return $resource('/users', {}, {
-    query: {
-      method: 'GET',
-      isArray: true
-    }
-  });
-})*/
-
 .run(function($http, $rootScope, Facebook, SoundCloud, Config, WebSocketClient, $location, UserSearch, $resource) {
   $rootScope.messages = [];
   $rootScope.fileIsConverted = false;
