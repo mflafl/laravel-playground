@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs" role="tablist">
+  <li><a href="#/friends">Friends</a></li>
+  <li class="active"><a href="#/friends/inbox">Inbox</a></li>
+  <li><a href="#/friends/outbox">Outbox</a></li>
+</ul>
+
+<ul class="list-group">
+  <li ng-repeat="item in inbox | orderBy:updated_at " class="list-group-item">
+    <span class="email"><% item.owner.email %></span>
+    <span data-user-id="<% item.owner.id %>" class="glyphicon glyphicon-ok" ng-click="acceptFriend($event)"></span>
+    <span data-user-id="<% item.owner.id %>" class="glyphicon glyphicon-remove" ng-click="ignoreFriend($event)"></span>
+  </li>
+</ul>

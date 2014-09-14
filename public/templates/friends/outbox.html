@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs" role="tablist">
+  <li><a href="#/friends">Friends</a></li>
+  <li><a href="#/friends/inbox">Inbox</a></li>
+  <li class="active"><a href="#/friends/outbox">Outbox</a></li>
+</ul>
+
+<ul class="list-group">
+  <li data-user-id="<% item.id %>" ng-repeat="item in outbox | orderBy:updated_at " class="list-group-item"><% item.user.email %></li>
+</ul>

@@ -22,6 +22,18 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
     controller: 'AppConvertedFilesCtrl',
     templateUrl: '/templates/files.html',
   })
+    .when('/friends', {
+    controller: 'AppFriendsCtrl',
+    templateUrl: '/templates/friends/index.html',
+  })
+    .when('/friends/inbox', {
+    controller: 'AppFriendsInboxCtrl',
+    templateUrl: '/templates/friends/inbox.html',
+  })
+    .when('/friends/outbox', {
+    controller: 'AppFriendsOutboxCtrl',
+    templateUrl: '/templates/friends/outbox.html',
+  })
     .otherwise({
     redirectTo: '/'
   });

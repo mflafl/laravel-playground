@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#/friends">Friends</a></li>
+  <li><a href="#/friends/inbox">Inbox</a></li>
+  <li><a href="#/friends/outbox">Outbox</a></li>
+</ul>
+
+<div class="list-group">
+  <li ng-repeat="friend in friends | orderBy:updated_at " class="list-group-item">
+      <% friend.email %>
+      <span data-user-id="<% friend.id %>" class="glyphicon glyphicon-remove" ng-click="removeFriend($event)">
+      </span>
+  </li>
+</div>

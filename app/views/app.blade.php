@@ -16,9 +16,10 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div ng-show="fbUser" class="navbar-header">
-      <a class="navbar-brand" href="#">Upload</a>
-      <a class="navbar-brand" href="#files">My files</a>
-      <form ng-controller="AppUserSearchCtrl" class="navbar-form navbar-left" role="search">
+      <a class="navbar-brand" href="#">Add File</a>
+      <a class="navbar-brand" href="#files">Files</a>
+      <a class="navbar-brand" href="#friends">Friends</a>
+      <form id="userSearchForm" method="POST" action="/user/friends/add" ng-submit="addFriend(); $event.preventDefault()" ng-controller="AppUserSearchCtrl" class="navbar-form navbar-left" role="search">
         <div class="form-group">
           <input type="text" class="user-search form-control" placeholder="Find friends...">
         </div>

@@ -1,5 +1,109 @@
-app.controller('AppUserSearchCtrl', function($scope, $rootScope, UserSearch, $resource) {
+app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
+  $scope.inbox = [];
 
+  $http({
+    method: 'GET',
+    url: 'user/friends/inbox',
+    headers: {
+      Facebook: $rootScope.fbUser.access_token
+    },
+  })
+    .success(function(response) {
+    $scope.inbox = response.data;
+  })
+    .error(function() {});
+
+  $scope.acceptFriend = function(e) {
+    $http({
+      method: 'POST',
+      url: 'user/friends/add',
+      data: {
+        username: $(e.target).closest('.list-group-item').find('.email').text()
+      },
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+    })
+      .success(function(response) {
+      // TODO: remove from inbox list
+    })
+      .error(function() {});
+
+  }
+
+  $scope.ignoreFriend = function(e) {
+
+
+  }
+})
+
+.controller('AppFriendsOutboxCtrl', function($scope, $rootScope, $http) {
+  $scope.outbox = [];
+
+  $http({
+    method: 'GET',
+    url: 'user/friends/outbox',
+    headers: {
+      Facebook: $rootScope.fbUser.access_token
+    },
+  })
+    .success(function(response) {
+    $scope.outbox = response.data;
+  })
+    .error(function() {});
+})
+
+.controller('AppFriendsCtrl', function($scope, $rootScope, $http) {
+  $scope.friends = [];
+
+  $http({
+    method: 'GET',
+    url: 'user/friends',
+    headers: {
+      Facebook: $rootScope.fbUser.access_token
+    },
+  })
+    .success(function(response) {
+    $scope.friends = response.data;
+  })
+    .error(function() {});
+
+
+  $scope.removeFriend = function(e) {
+    var userId = $(e.target).data('user-id');
+    $http({
+      method: 'POST',
+      url: 'user/friends/remove',
+      data: {
+        userId: userId
+      },
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+    })
+      .success(function(response) {
+      // TODO: remove from friend list
+    })
+      .error(function() {});
+  }
+})
+
+app.controller('AppUserSearchCtrl', function($scope, $rootScope, $http) {
+  $scope.addFriend = function() {
+    var form = $('#userSearchForm');
+    $http({
+      method: 'POST',
+      url: form.attr('action'),
+      data: {
+        username: $('.user-search').typeahead('val')
+      },
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+    })
+      .success(function(response) {})
+      .error(function() {});
+  }
 })
 
 .controller('AppConvertedFilesCtrl', function($scope, $rootScope, $resource) {
