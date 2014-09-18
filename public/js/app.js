@@ -40,6 +40,9 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
 })
 
 .run(function($http, $rootScope, Facebook, SoundCloud, Config, WebSocketClient, $location, UserSearch, $resource) {
+  var destination = location.hash.replace("#", "");
+  $location.path('/');
+
   $rootScope.messages = [];
   $rootScope.fileIsConverted = false;
   $rootScope.progress = 0;
@@ -61,6 +64,7 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
   });
 
   Facebook.subscribe('auth.login', function(response) {
+    console.log('auth_login');
     if (response.status === 'connected') {
       $http({
         method: 'POST',
@@ -73,7 +77,7 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
         $rootScope.fbUser = response.data;
         WebSocketClient.init(Config.websocket_address, response.data.email);
         UserSearch.init();
-        $location.path('/');
+        $location.path(destination);
       }).
       error(function(response) {});
     } else {}

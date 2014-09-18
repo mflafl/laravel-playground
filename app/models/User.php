@@ -77,8 +77,8 @@ class User extends Eloquent {
 
 	public function getFriends() {
 		$requests = FriendRequest::where(function ($query) {
-				$query->where('owner_id', '=', $this->id)
-							->where('status', '=', User::STATUS_APPROVED);
+					$query->where('owner_id', '=', $this->id)
+								->where('status', '=', User::STATUS_APPROVED);
 		})->orWhere(function ($query) {
 				$query->where('user_id', '=', $this->id)
 							->where('status', '=', User::STATUS_APPROVED);

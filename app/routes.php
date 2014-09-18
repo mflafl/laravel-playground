@@ -21,6 +21,8 @@ Route::get('users', 'BaseController@getUsers');
 
 Route::post('user/friends/add', 'FriendsController@addFriend');
 Route::post('user/friends/remove', 'FriendsController@removeFriend');
+Route::post('user/friends/request/cancel', 'FriendsController@cancelRequest');
+Route::post('user/friends/request/ignore', 'FriendsController@ignoreRequest');
 Route::get('user/friends', 'FriendsController@getFriends');
 Route::get('user/friends/inbox', 'FriendsController@inbox');
 Route::get('user/friends/outbox', 'FriendsController@outbox');

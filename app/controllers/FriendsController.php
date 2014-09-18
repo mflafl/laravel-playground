@@ -42,4 +42,40 @@ class FriendsController extends Controller {
 		return Response::json(array('errors' => array()));
 	}
 
+	function cancelRequest() {
+		$user = User::current();
+		$errors = array();
+		$requestId = Input::get('requestId');
+		$request = FriendRequest::find($requestId);
+
+		if ($request) {
+			if ($request->owner_id == $user->id && $request->status == User::STATUS_PENDING) {
+				$request->delete();
+			}
+		} else {
+			$errors[] = 'Request not found';
+		}
+
+		return Response::json(array('errors' => $errors));
+	}
+	
+	/*
+	 * Dont show request in inbox folder
+	 */
+	function ignoreRequest() {
+		$user = User::current();
+		$errors = array();
+		$requestId = Input::get('requestId');
+		$request = FriendRequest::find($requestId);
+
+		if ($request) {
+			if ($request->user_id == $user->id && $request->status == User::STATUS_PENDING) {
+				$request->status = User::STATUS_IGNORED;
+				$request->save();
+			}
+		} else {
+			$errors[] = 'Request not found';
+		}
+		return Response::json(array('errors' => $errors));
+	}
 }

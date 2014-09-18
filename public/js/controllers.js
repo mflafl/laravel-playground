@@ -28,12 +28,24 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
       // TODO: remove from inbox list
     })
       .error(function() {});
-
   }
 
-  $scope.ignoreFriend = function(e) {
-
-
+  $scope.ignoreRequest = function(e) {
+    var requestId = $(e.target).data('request-id');
+    $http({
+      method: 'POST',
+      url: 'user/friends/request/ignore',
+      data: {
+        requestId: requestId
+      },
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+    })
+      .success(function(response) {
+      $scope.inbox.splice($scope.inbox.indexOf(this.inbox), 1);
+    })
+      .error(function() {});
   }
 })
 
@@ -51,6 +63,24 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
     $scope.outbox = response.data;
   })
     .error(function() {});
+
+  $scope.cancelRequest = function(e) {
+    var requestId = $(e.target).data('request-id');
+    $http({
+      method: 'POST',
+      url: 'user/friends/request/cancel',
+      data: {
+        requestId: requestId
+      },
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+    })
+      .success(function(response) {
+      $scope.outbox.splice($scope.outbox.indexOf(this.outbox), 1);
+    })
+      .error(function() {});
+  }
 })
 
 .controller('AppFriendsCtrl', function($scope, $rootScope, $http) {
@@ -82,13 +112,13 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
       },
     })
       .success(function(response) {
-      // TODO: remove from friend list
+      $scope.friends.splice($scope.friends.indexOf(this.friend), 1);
     })
       .error(function() {});
   }
 })
 
-app.controller('AppUserSearchCtrl', function($scope, $rootScope, $http) {
+.controller('AppUserSearchCtrl', function($scope, $rootScope, $http) {
   $scope.addFriend = function() {
     var form = $('#userSearchForm');
     $http({

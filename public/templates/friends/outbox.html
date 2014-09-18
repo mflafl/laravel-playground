@@ -5,5 +5,7 @@
 </ul>
 
 <ul class="list-group">
-  <li data-user-id="<% item.id %>" ng-repeat="item in outbox | orderBy:updated_at " class="list-group-item"><% item.user.email %></li>
+  <li ng-repeat="item in outbox | orderBy:updated_at " class="list-group-item"><% item.user.email %>
+  <span data-request-id="<% item.id %>" class="glyphicon glyphicon-remove" ng-click="cancelRequest($event)"></span>
+  </li>  
 </ul>
