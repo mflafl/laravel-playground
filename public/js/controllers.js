@@ -25,7 +25,7 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
       },
     })
       .success(function(response) {
-      // TODO: remove from inbox list
+      $scope.inbox.splice($scope.inbox.indexOf(this.inbox), 1);
     })
       .error(function() {});
   }

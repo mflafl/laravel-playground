@@ -116,15 +116,7 @@ class BaseController extends Controller {
 	protected function getUserConvertedfiles() {
     $user = User::current();
 		$errors = array();
-		$files = $user->files()->get()->toArray();
-		
-		$friends = $user->getFriends();
-		if ($friends) {
-			foreach ($friends as $friend) {
-				$files = array_merge($files, $friend->files()->get()->toArray());
-			}
-		}
-
+		$files = $user->getAllFiles();
 		return $files;
 	}
 

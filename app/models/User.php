@@ -74,6 +74,13 @@ class User extends Eloquent {
       $request->save();
     }
   }
+	
+	/*
+	 * return files listing (with friend files)
+	 */
+	public function getAllFiles() {
+		
+	}
 
 	public function getFriends() {
 		$requests = FriendRequest::where(function ($query) {
