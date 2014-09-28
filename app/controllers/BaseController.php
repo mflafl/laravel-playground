@@ -131,4 +131,14 @@ class BaseController extends Controller {
 
     return $result;
   }
+
+  protected function deleteConvertedfile() {
+    $user = User::current();
+    $id = (int) Input::get('id');
+    $file = ConvertedFile::find($id);
+    if ($file->user->id === $user->id) {
+      File::delete(public_path().'/'.$file->system_name);
+      $file->delete();
+    }
+  }
 }

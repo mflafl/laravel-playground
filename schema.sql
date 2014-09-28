@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 14, 2014 at 11:26 PM
+-- Generation Time: Sep 28, 2014 at 04:11 PM
 -- Server version: 5.5.38-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.4
 
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `converted_files` (
   `user_id` bigint(20) NOT NULL,
   `filename` varchar(255) CHARACTER SET utf8 NOT NULL,
   `filepath` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `system_name` varchar(255) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)

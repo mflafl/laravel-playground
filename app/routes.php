@@ -17,6 +17,7 @@ Route::post('progress', 'BaseController@convertProgress');
 
 Route::post('user', 'BaseController@login');
 Route::get('user/files', 'BaseController@getUserConvertedfiles');
+Route::delete('user/files', 'BaseController@deleteConvertedfile');
 Route::get('users', 'BaseController@getUsers');
 
 Route::post('user/friends/add', 'FriendsController@addFriend');

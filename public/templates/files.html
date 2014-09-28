@@ -1,6 +1,10 @@
-<div class="list-group">
-  <a ng-repeat="file in userFiles | orderBy:created_at " href="<% file.filepath %>" class="list-group-item">
-    <h4 class="list-group-item-heading"><% file.filename %></h4>    
-    <p class="list-group-item-text"><% file.owner.email %><br /><% file.created_at %></p>
-  </a>
-</div>
+<ul class="list-group">
+  <li ng-repeat="file in userFiles" class="list-group-item">
+  <a target="_blank" title="Download <% file.filename %>" href="<% file.filepath %>"><% file.filename %></a>
+  <span class="label label-info" ng-hide="fbUser.email == file.user.email">
+    By <% file.user.email %>
+  </span>
+  <span class="label label-default"><% file.created_at %></span>
+  <span ng-show="fbUser.email == file.user.email" class="glyphicon glyphicon-remove" ng-click="removeFile($event)"></span>
+  </li>
+</ul>

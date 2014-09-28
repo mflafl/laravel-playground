@@ -64,7 +64,6 @@ var app = angular.module('audioConverter', ['ngRoute', 'ngResource', 'facebook',
   });
 
   Facebook.subscribe('auth.login', function(response) {
-    console.log('auth_login');
     if (response.status === 'connected') {
       $http({
         method: 'POST',

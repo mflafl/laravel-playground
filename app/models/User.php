@@ -79,10 +79,18 @@ class User extends Eloquent {
 	 * return files listing (with friend files)
 	 */
 	public function getAllFiles() {
-		
+    $friendIds = $this->getFriendIds();
+    $friendIds[] = $this->id;
+		$files = ConvertedFile::with('user')
+      ->whereIn('user_id', $friendIds)
+      ->orderBy('created_at', 'desc')
+      ->get();
+    return $files;
 	}
 
-	public function getFriends() {
+  private function getFriendIds() {
+    $friendIds = array();
+
 		$requests = FriendRequest::where(function ($query) {
 					$query->where('owner_id', '=', $this->id)
 								->where('status', '=', User::STATUS_APPROVED);
@@ -92,7 +100,6 @@ class User extends Eloquent {
 		})->get();
 
 		if ($requests->count()) {
-			$friendIds = array();
 			foreach ($requests as $request) {
 				if ($request->owner_id == $this->id) {
 					$friendId = $request->user_id;
@@ -101,14 +108,26 @@ class User extends Eloquent {
 				}
 				$friendIds[] = $friendId;
 			}
-			$friends = User::whereIn('id', $friendIds)->get();
-      return $friends;
-		} else {
-      // just empty query object
-      return $requests;
     }
+
+    return $friendIds;
+  }
+
+	public function getFriends() {
+    $friends = array();
+    $friendIds = $this->getFriendIds();
+
+    if ($friendIds) {
+      $friends = User::whereIn('id', $friendIds)->get();
+    }
+
+    return $friends;
 	}
 
+  /*
+   * ingoing friend requests
+   * @return object
+   */
   public function getInbox() {
     $data = FriendRequest::with('owner')
       ->where('user_id', '=', $this->id)
@@ -118,6 +137,10 @@ class User extends Eloquent {
     return $data;
   }
 
+  /*
+   * outgoing friend requests
+   * @return object
+   */
   public function getOutbox() {
     $data = FriendRequest::with('user')
       ->where('owner_id', '=', $this->id)

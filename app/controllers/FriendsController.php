@@ -32,7 +32,7 @@ class FriendsController extends Controller {
   function getFriends() {
 		$user = User::current();
 		$friends = $user->getFriends();
-		return Response::json(array('errors' => array(), 'data' => $friends->toArray()));
+		return Response::json(array('errors' => array(), 'data' => $friends));
   }
 
 	function removeFriend() {

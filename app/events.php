@@ -5,6 +5,7 @@ Event::listen('convert.success',function($client_data) {
   $file->user_id = $client_data['fb_user_id'];
   $file->filename = $client_data['client_name'];
   $file->filepath = $client_data['url'];
+  $file->system_name = $client_data['filename'];
   $file->save();
 
   WebSocket::setMessage('convert.success', $client_data);

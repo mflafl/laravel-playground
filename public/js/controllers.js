@@ -144,10 +144,25 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
         Facebook: $rootScope.fbUser.access_token
       },
       isArray: true
+    },
+
+    remove: {
+      method: 'DELETE',
+      headers: {
+        Facebook: $rootScope.fbUser.access_token
+      },
+      params: {
+        id: '@id'
+      }
     }
   });
 
   $scope.userFiles = $scope.filesResource.get();
+
+  $scope.removeFile = function(e) {
+    $scope.filesResource.remove({id: this.file.id});
+    $scope.userFiles.splice($scope.userFiles.indexOf(this.file), 1);
+  }
 })
 
 .controller('AppLoginCtrl', function($scope) {})
