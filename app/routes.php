@@ -18,8 +18,8 @@ Route::post('progress', 'BaseController@convertProgress');
 Route::post('user', 'BaseController@login');
 Route::get('user/files', 'BaseController@getUserConvertedfiles');
 Route::delete('user/files', 'BaseController@deleteConvertedfile');
-Route::get('users', 'BaseController@getUsers');
 
+Route::get('users', 'FriendsController@getUsers');
 Route::post('user/friends/add', 'FriendsController@addFriend');
 Route::post('user/friends/remove', 'FriendsController@removeFriend');
 Route::post('user/friends/request/cancel', 'FriendsController@cancelRequest');

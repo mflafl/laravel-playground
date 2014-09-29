@@ -80,6 +80,7 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
 })
 
 .controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
+  $rootScope.messages = [];
   $scope.inbox = [];
 
   $http({
@@ -131,6 +132,7 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
 })
 
 .controller('AppFriendsOutboxCtrl', function($scope, $rootScope, $http) {
+  $rootScope.messages = [];
   $scope.outbox = [];
 
   $http({
@@ -165,6 +167,7 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
 })
 
 .controller('AppFriendsCtrl', function($scope, $rootScope, $http) {
+  $rootScope.messages = [];
   $scope.friends = [];
 
   $http({
@@ -200,6 +203,7 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
 })
 
 .controller('AppUserSearchCtrl', function($scope, $rootScope, $http) {
+  $scope.validUser = false;
   $scope.addFriend = function() {
     var form = $('#userSearchForm');
     $http({
@@ -213,13 +217,20 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
       },
     })
       .success(function(response) {
-      // TODO: Action after adding user to friends
+      $rootScope.messages = [];
+      $.each(response.errors, function(index, value) {
+        $rootScope.messages.push({
+          type: 'danger',
+          text: value
+        })
+      });
     })
       .error(function() {});
   }
 })
 
 .controller('AppConvertedFilesCtrl', function($scope, $rootScope, $resource) {
+  $rootScope.messages = [];
   $scope.filesResource = $resource('/user/files', {}, {
     get: {
       method: 'GET',
@@ -244,10 +255,9 @@ app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Confi
   $scope.removeFile = function(e) {
     $scope.filesResource.remove({
       id: this.file.id
+    }, function() {
+      $scope.userFiles.splice($scope.userFiles.indexOf(this.file), 1);
     });
-
-    // TODO: move to resource success callback
-    $scope.userFiles.splice($scope.userFiles.indexOf(this.file), 1);
   }
 })
 

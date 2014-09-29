@@ -3,6 +3,23 @@
 class FriendsController extends Controller {
 
 	protected $layout = 'layouts.base';
+	
+	/**
+	 * Users list (for the autocomplete form)
+	 *
+	 * @return Array
+	 */	
+  protected function getUsers() {
+    $user = User::current();
+    $data = DB::select('select email from users where id <> ?', array($user->id));
+    $result = array();
+
+    foreach ($data as $value) {
+      $result[] = $value->email;
+    }
+
+    return $result;
+  }
 
   function inbox() {
 		$user = User::current();
@@ -21,12 +38,16 @@ class FriendsController extends Controller {
 		$user = User::current();
 		$friend_username = Input::get('username');
 		$friend = User::where('email', '=', $friend_username)->first();
-		
+
 		if ($friend) {
-			$user->addFriend($friend);
+			if (!$user->addFriend($friend)) {
+				$errors[] = 'You have already requested friendship';
+			}
 		} else {
 			$errors[] = 'Bad user';
 		}
+
+		return Response::json(array('errors' => $errors));
   }
 
   function getFriends() {

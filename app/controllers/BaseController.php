@@ -126,24 +126,6 @@ class BaseController extends Controller {
 	}
 
 	/**
-	 * Users list (for the autocomplete form)
-	 *
-	 * @return Array
-	 */	
-  protected function getUsers() {
-		// TODO: remove emails that are already friends
-    $user = User::current();
-    $data = DB::select('select email from users where id <> ?', array($user->id));
-    $result = array();
-
-    foreach ($data as $value) {
-      $result[] = $value->email;
-    }
-
-    return $result;
-  }
-
-	/**
 	 * Delete user file
 	 *
 	 * @return void

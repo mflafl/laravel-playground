@@ -35,18 +35,25 @@ class User extends Eloquent {
 
 		if ($request) {
       switch ($request->status) {
-        // accept inbox request
         case User::STATUS_PENDING:
-          $request->status = User::STATUS_APPROVED;
-          $request->save();
+					// accept inbox request
+					if ($request->user_id == $this->id) {
+						$request->status = User::STATUS_APPROVED;
+						$request->save();
+						return TRUE;
+					}
           break;
       }
+
+			return FALSE;
 		} else {
 			$request = new FriendRequest();
 			$request->owner_id = $this->id;
 			$request->user_id = $user->id;
+			$request->save();
 		}
-		$request->save();
+
+		return TRUE;
 	}
 
 	public function removeFriend($friendId) {

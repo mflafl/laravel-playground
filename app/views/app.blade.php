@@ -19,11 +19,12 @@
       <a class="navbar-brand" href="#">Add File</a>
       <a class="navbar-brand" href="#files">Files</a>
       <a class="navbar-brand" href="#friends">Friends</a>
-      <form id="userSearchForm" method="POST" action="/user/friends/add" ng-submit="addFriend(); $event.preventDefault()" ng-controller="AppUserSearchCtrl" class="navbar-form navbar-left" role="search">
+      <form id="userSearchForm" method="POST" action="/user/friends/add" ng-submit="addFriend(); $event.preventDefault()"
+      ng-controller="AppUserSearchCtrl" class="navbar-form navbar-left" role="search">
         <div class="form-group">
           <input type="text" class="user-search form-control" placeholder="Find friends...">
         </div>
-        <button type="submit" class="btn btn-default">Add</button>
+        <button ng-disabled="validUser" type="submit" class="btn btn-default">Add</button>
       </form>        
     </div>
 
@@ -47,6 +48,11 @@
 
   </div>
   <div class="jumbotron">
+    <ul ng-show="messages.length" class="messages">
+        <li class="alert alert-<% message.type %>" ng-repeat="message in messages">
+            <% message.text %>
+        </li>
+    </ul>  
     <div ng-view></div>
   </div>
   <div class="footer">
