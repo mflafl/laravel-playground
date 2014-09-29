@@ -1,4 +1,85 @@
-app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
+app.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Config) {
+  $scope.fileId = 0;
+
+  $scope.convert = function() {
+    $rootScope.messages = [];
+
+    if (!$rootScope.fbUser) {
+      var message = {
+        type: 'danger',
+        text: 'Login to facebook to use converter'
+      }
+      $rootScope.messages.push(message);
+      return;
+    }
+
+    var form = $('#convertForm'),
+      formData = new FormData(form[0]);
+
+    // Prevent multiple submisions
+    if (form.data('loading') === true) {
+      return;
+    }
+    form.data('loading', true);
+
+    $http({
+      method: 'POST',
+      url: form.attr('action'),
+      data: formData,
+      headers: {
+        'Content-Type': undefined,
+        Facebook: $rootScope.fbUser.access_token
+      },
+      transformRequest: angular.identity
+    })
+      .success(function(response) {
+      $rootScope.messages = [];
+
+      $(form).data('loading', false);
+      if (Object.keys(response.errors).length) {
+        angular.forEach(response.errors, function(value, key) {
+          var message = {
+            type: 'danger',
+            text: value.toString()
+          }
+          $rootScope.messages.push(message);
+        });
+      } else {
+        var message = {
+          type: 'success',
+          text: 'Successfully uploaded. Link to the converted file will be available soon'
+        }
+        $rootScope.messages.push(message);
+        $scope.fileId = response.data.id;
+
+        // Converting progress calls
+        var timer = $interval(function() {
+          if ($rootScope.fileIsConverted) {
+            $interval.cancel(timer);
+            $rootScope.fileIsConverted = false;
+            return;
+          }
+          $http({
+            method: 'POST',
+            url: "progress",
+            data: {
+              id: $scope.fileId
+            }
+          })
+            .success(function(response) {
+            $rootScope.progress = response.data.progress;
+          })
+        }, 1000);
+
+      }
+    })
+      .error(function() {
+      $(form).data('loading', false);
+    });
+  }
+})
+
+.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
   $scope.inbox = [];
 
   $http({
@@ -131,7 +212,9 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
         Facebook: $rootScope.fbUser.access_token
       },
     })
-      .success(function(response) {})
+      .success(function(response) {
+      // TODO: Action after adding user to friends
+    })
       .error(function() {});
   }
 })
@@ -145,7 +228,6 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
       },
       isArray: true
     },
-
     remove: {
       method: 'DELETE',
       headers: {
@@ -160,7 +242,11 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
   $scope.userFiles = $scope.filesResource.get();
 
   $scope.removeFile = function(e) {
-    $scope.filesResource.remove({id: this.file.id});
+    $scope.filesResource.remove({
+      id: this.file.id
+    });
+
+    // TODO: move to resource success callback
     $scope.userFiles.splice($scope.userFiles.indexOf(this.file), 1);
   }
 })
@@ -185,85 +271,3 @@ app.controller('AppFriendsInboxCtrl', function($scope, $rootScope, $http) {
     $rootScope.soundCloudLoggedIn = SoundCloud.user;
   }
 })
-
-.controller('IndexCtrl', function($scope, $rootScope, $http, $interval, Config) {
-  $scope.fileId = 0;
-
-  $scope.convert = function() {
-    $rootScope.messages = [];
-
-
-    if (!$rootScope.fbUser) {
-      var message = {
-        type: 'danger',
-        text: 'Login to facebook to use converter'
-      }
-      $rootScope.messages.push(message);
-      return;
-    }
-
-    var form = $('#convertForm'),
-      formData = new FormData(form[0]);
-
-    // Prevent multiple submisions
-    if (form.data('loading') === true) {
-      return;
-    }
-    form.data('loading', true);
-
-    $http({
-      method: 'POST',
-      url: form.attr('action'),
-      data: formData,
-      headers: {
-        'Content-Type': undefined,
-        Facebook: $rootScope.fbUser.access_token
-      },
-      transformRequest: angular.identity
-    })
-      .success(function(response) {
-      $rootScope.messages = [];
-
-      $(form).data('loading', false);
-      if (Object.keys(response.errors).length) {
-        angular.forEach(response.errors, function(value, key) {
-          var message = {
-            type: 'danger',
-            text: value.toString()
-          }
-          $rootScope.messages.push(message);
-        });
-      } else {
-        var message = {
-          type: 'success',
-          text: 'Successfully uploaded. Link to the converted file will be available soon'
-        }
-        $rootScope.messages.push(message);
-        $scope.fileId = response.data.id;
-
-        // Converting progress calls
-        var timer = $interval(function() {
-          if ($rootScope.fileIsConverted) {
-            $interval.cancel(timer);
-            $rootScope.fileIsConverted = false;
-            return;
-          }
-          $http({
-            method: 'POST',
-            url: "progress",
-            data: {
-              id: $scope.fileId
-            }
-          })
-            .success(function(response) {
-            $rootScope.progress = response.data.progress;
-          })
-        }, 1000);
-
-      }
-    })
-      .error(function() {
-      $(form).data('loading', false);
-    });
-  }
-});

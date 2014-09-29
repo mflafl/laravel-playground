@@ -46,7 +46,7 @@ class BaseController extends Controller {
 	/**
 	 * Upload form handler
 	 *
-	 * @return Response
+	 * @return JSON
 	 */
 	protected function uploadFormProcess()
 	{
@@ -94,7 +94,7 @@ class BaseController extends Controller {
 	/**
 	 * convert Progress
 	 *
-	 * @return Response
+	 * @return JSON
 	 */
 	protected function convertProgress()
 	{
@@ -113,6 +113,11 @@ class BaseController extends Controller {
 		return Response::json(array('errors' => $errors, 'data' => $responseData));
 	}
 
+	/**
+	 * User files list (friend files included)
+	 *
+	 * @return Array
+	 */
 	protected function getUserConvertedfiles() {
     $user = User::current();
 		$errors = array();
@@ -120,7 +125,13 @@ class BaseController extends Controller {
 		return $files;
 	}
 
+	/**
+	 * Users list (for the autocomplete form)
+	 *
+	 * @return Array
+	 */	
   protected function getUsers() {
+		// TODO: remove emails that are already friends
     $user = User::current();
     $data = DB::select('select email from users where id <> ?', array($user->id));
     $result = array();
@@ -132,6 +143,11 @@ class BaseController extends Controller {
     return $result;
   }
 
+	/**
+	 * Delete user file
+	 *
+	 * @return void
+	 */		
   protected function deleteConvertedfile() {
     $user = User::current();
     $id = (int) Input::get('id');

@@ -42,6 +42,11 @@ class FriendsController extends Controller {
 		return Response::json(array('errors' => array()));
 	}
 
+	/*
+	 * Cancel own friend request
+	 *
+	 * @return JSON
+	 */	
 	function cancelRequest() {
 		$user = User::current();
 		$errors = array();
@@ -61,6 +66,8 @@ class FriendsController extends Controller {
 	
 	/*
 	 * Dont show request in inbox folder
+	 *
+	 * @return JSON
 	 */
 	function ignoreRequest() {
 		$user = User::current();

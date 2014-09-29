@@ -7,7 +7,7 @@
 ```
 * Configure database: app/config/database.php
 
-* Import database - schema.sql,
+* Import database structure - schema.sql,
 
 * Setup WebSocket server (tcp://localhost:5555, ws://localhost:8080)
 
@@ -52,3 +52,5 @@ return array(
 ```
 
 * Upload mp3/ogg files
+
+* For testing sharing to facebook, login to souncloud, select "Publish to SoundCloud" on the upload form and check your facebook email.
